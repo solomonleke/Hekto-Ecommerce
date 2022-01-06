@@ -1,23 +1,73 @@
 import logo from './logo.svg';
 import './App.css';
+import './Homepage.css';
+import './Day1.css';
+import Header from './Components/Header';
+import Nav from './Components/Nav';
+import ShopLeft from './Screens/ShopLeft';
+import ShopGrid from './Screens/ShopGrid';
+import Footer from './Components/Footer';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import Homepage from './Screens/Homepage';
+import ProductDetails from './Screens/ProductDetails';
+import Login from './Screens/Login';
+import Register from './Screens/Register';
+import OrderCompleted from './Screens/OrderCompleted';
+import ShoppingCart from './Screens/ShoppingCart';
+import ShippingInfo from './Screens/ShippingInfo';
+import About from './Screens/About';
+import Contact from './Screens/Contact';
+import { UserContext } from './Context/UserContext';
+import { useContext, useState } from 'react';
 
 function App() {
+
+
+
+  const cart_product = JSON.parse(localStorage.getItem("productsCart"));
+
+
+
+  // console.log( "length", cart_product.length)
+  const [cartTotal, setCartTotal] = useState(0)
+
+
+
+  const [CartLength, setCartLength] = useState(
+    
+    cart_product.length
+   
+  );
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  <UserContext.Provider  value= {{CartLength, setCartLength, CartLength, setCartLength}}>
+
+   <BrowserRouter>
+
+   
+    <Routes>
+   
+      <Route path="/" element = {<Homepage/>} />
+      <Route path="/about" element = {<About/>} />
+      <Route path="/contact" element = {<Contact/>} />
+      <Route path="/shopList" element = {<ShopLeft/>} />
+      <Route path="/shopGrid" element = {<ShopGrid/>} />
+      <Route path="/product-details" element = {<ProductDetails/>} />
+    
+      <Route path="/login" element = {<Login/>} />
+      <Route path="/register" element = {<Register/>} />
+      <Route path="/product-details" element = {<ProductDetails/>} />
+      <Route path="/order-completed" element = {<OrderCompleted/>} />
+      <Route path="/shopping-cart" element = {<ShoppingCart/>} />
+      <Route path="/product" element = {<ShoppingCart/>} />
+     
+    </Routes>
+    
+   <Footer/>
+
+
+   </BrowserRouter>
+   </UserContext.Provider>
     </div>
   );
 }
