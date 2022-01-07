@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { Link } from 'react-router-dom';
 import { UserContext } from '../Context/UserContext';
 
 export default function ProductCard(props) {
@@ -43,12 +44,14 @@ export default function ProductCard(props) {
                 <div className="card-body">
                   <div className="single-item row">
                     <div className="col-4 ">
-                  <img src={`http://localhost:8000/images/${props.product_img}`} alt="" className="card-img-top product-img" />
+                    <Link to={`/product-details/${props.id}`} className="link">
+                  <img src={`http://localhost:8000/images/${props.product_img}`} alt="" className="card-img-top product-img" /></Link>
                     </div>
                     <div className="col-8">
                       <div className="row">
                         <div className="col-lg-4">
-                          <p className="card-title">{props.product_name}</p>
+                        <Link to={`/product-details/${props.id}`} className="link">
+                          <p className="card-title">{props.product_name}</p></Link>
                         </div>
                         <div className="col-lg-8">
                           <div className>

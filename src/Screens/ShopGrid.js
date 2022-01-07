@@ -58,30 +58,7 @@ export default function ShopGrid() {
 
   })
 
-  const paginated_product = ((paginate_id) =>{
-
-    if(paginate !== null){
-        fetch(`http://localhost:8000/api/paginatedProducts/${paginate_id}`)
-        .then(res => res.json())
-        .then(json => {
-            
-          console.log( "page" , json.data)
-       
-            // console.log(json);
-            localStorage.setItem('data', JSON.stringify(json.data));
-            setData(json.data);
-        })
-        .catch(error => {
-            
-          console.log("error", error);
-          
-      })
-    }
-
   
-
-})
-
   const updated = (jsn) =>{
     setUpdate(jsn)
  
@@ -271,7 +248,7 @@ export default function ShopGrid() {
                    
                       <span></span>
                     </div>
-                      
+
                     </div>
                 </div>
                 </div>

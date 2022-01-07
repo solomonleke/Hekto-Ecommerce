@@ -69,8 +69,8 @@ export default function Card(props) {
           </div>
         
 
-
-          <p className="card-title text-center mt-4">{props.product_name}</p>
+          <Link to={`/product-details/${props.id}`} className="link">
+          <p className="card-title text-center mt-4">{props.product_name}</p></Link>
           <div className=" text-center">
           <span className="sm-circle bg-warning " />
           <span className="sm-circle bg-danger" />

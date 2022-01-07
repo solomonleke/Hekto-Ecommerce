@@ -8,16 +8,37 @@ export default function ShopLeft() {
 
   const [data, setData] = useState([])
   const [update, setUpdate] = useState("")
+  const [paginate, setPaginate] = useState("")
 
-  // const userContext = createContext()
+  // const userContext = createContext()\
+
 
   const fetch_product = (() =>{
 
+    if(paginate >= 1){
+        fetch(`http://localhost:8000/api/paginatedProducts/${paginate}`)
+        .then(res => res.json())
+        .then(json => {
+            
+          console.log( "page" , json)
+       
+            // console.log(json);
+            localStorage.setItem('data', JSON.stringify(json.data));
+            setData(json.data);
+        })
+        .catch(error => {
+            
+          console.log("error", error);
+          
+      })
+    }else{
+            
       fetch('http://localhost:8000/api/products')
       .then(res => res.json())
       .then(json => {
           
         console.log(json.products)
+     
           // console.log(json);
           localStorage.setItem('data', JSON.stringify(json.data));
           setData(json.products);
@@ -27,8 +48,11 @@ export default function ShopLeft() {
         console.log("error", error);
         
     })
+    }
+
 
   })
+
 
   const updated = (jsn) =>{
     setUpdate(jsn)
@@ -42,7 +66,7 @@ export default function ShopLeft() {
       return () => {
         
       }
-  }, [])
+  }, [paginate])
 
     return (
         <div>
@@ -68,7 +92,7 @@ export default function ShopLeft() {
             <div className="col-lg-6 d-inline-flex">
               <div className="search-div1">
                 <span className="search-text filter-icon">Per Page:</span>
-                <input className="search-input" size={1} type="text" />
+                <input className="search-input" size={1} value={paginate} onChange={((e) =>(setPaginate(e.target.value)))} type="text" />
               </div>
               <div className="search-div2">
                 <span className="search-text filter-icon">Sort By:</span>
@@ -196,6 +220,7 @@ export default function ShopLeft() {
 
                 <ProductCard
                 product_name = {item.Name}
+                id = {item.id}
                 product_img = {item.Picture_url1}
                 current_price ={item.Price}
                 formal_price ={item.SlicedPercentage}

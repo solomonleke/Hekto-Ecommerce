@@ -1,21 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom';
+import { UserContext } from '../Context/UserContext';
 
 function SingleProduct() {
 
   const [data, setdata] = useState([]);
+ 
+  const [mainImg, setMainImg] = useState("");
+
+  const {CartLength, setCartLength} = useContext(UserContext)
 
 
+  const {id} = useParams();
 
-  const fetch_single_product = (() => {
-    fetch_single_product
+  const fetch_single_product = ((id) => {
+    
+
         fetch(`http://localhost:8000/api/products/${id}`)
         .then(res => res.json())
         .then(json => {
-            
-          console.log(json.products)
-            // console.log(json);
             localStorage.setItem('data', JSON.stringify(json.data));
             setdata(json.products);
+            console.log("single", json.products)
         })
         .catch(error => {
             
@@ -24,12 +30,70 @@ function SingleProduct() {
       })
       })
 
+      const img1 = `http://localhost:8000/images/${data.Picture_url1}`
+      const img2 = `http://localhost:8000/images/${data.Picture_url2}`
+      const img3 = `http://localhost:8000/images/${data.Picture_url3}`
+      const img4 = `http://localhost:8000/images/${data.Picture_url4}`
+
+     
+
+      const changeImg = ((singleImg) =>{
+
+        setMainImg(singleImg)
+      })
 
   useEffect(() => {
 
-    fetch_single_product()
+    fetch_single_product(id)
 
+   
   }, [])
+
+
+  
+  // const add_to_cart = props.addCart
+  
+  
+      const add_to_cart = (() =>{
+
+        let cartItems = JSON.parse(localStorage.getItem("productsCart"));
+        let cartTotal = JSON.parse(localStorage.getItem("total"));
+        
+
+        if(cartItems !==null){
+          let names =[]
+          for (let i=0; i <cartItems.length; i++){
+            names.push(cartItems[i].name)
+          }
+          if(names.includes(data.Name)){
+            return alert("Product Already in Cart");
+          }else{
+            cartItems.push({ "image":data.Picture_url1, "id": data.id, "qty": 1, "name":data.Name, "price":data.Price, "color":data.Color, "size":data.Size}
+            )
+            localStorage.setItem("productsCart", JSON.stringify(cartItems));
+            
+            localStorage.setItem("total", parseInt(cartTotal) + parseInt( data.Price));
+            setCartLength(cartItems.length)
+          }
+        }else{
+          cartItems = [{ "image":data.Picture_url1, "id": data.id, "qty": 1, "name":data.Name, "price":data.Price, "color":data.Color, "size":data.Size}]
+          localStorage.setItem("total", data.Price);
+          localStorage.setItem("productsCart", JSON.stringify(cartItems));
+          setCartLength(cartItems.length)
+        }
+
+        // const cart =[
+        //   props.product_img, props.product_name, props.current_price, props.product_color, props.product_size
+        // ]
+
+
+        // localStorage.setItem('cart-data', JSON.stringify(cart));
+          
+            // alert(cart)
+    })
+
+
+
     return (
         <div className="container">
       <div
@@ -43,24 +107,27 @@ function SingleProduct() {
       >
         <div className="col-lg-2">
           <img className="details-img"
-            src=".././images/mainpic.png"
-            style={{ padding: "8px 8px 4px" }}
+            src={img4}
+            style={{ padding: "8px 8px 4px" , cursor: "pointer"}}
             alt="bag1"
+            onClick={() => changeImg(img4)}
           />
           <img  className="details-img"
-            src=".././images/pic2.png"
-            style={{ padding: "4px 8px" }}
+            src={img3}
+            style={{ padding: "4px 8px" , cursor: "pointer" }}
             alt="bag2"
+            onClick={() => changeImg(img3)}
           />
           <img  className="details-img"
-            src=".././images/pic3.png"
-            style={{ padding: "4px 8px" }}
+            src={img2}
+            style={{ padding: "4px 8px" , cursor: "pointer" }}
             alt="bag3"
+            onClick={() => changeImg(img2)}
           />
         </div>
         <div className="col-lg-4">
           <img  className="details-img-main"
-            src=".././images/pic2.png"
+            src={mainImg == "" ? (img1): (mainImg)  }
             style={{ padding: "8px 4px" }}
             alt="bag4"
           />
@@ -73,7 +140,7 @@ function SingleProduct() {
                   className="card-title"
                   style={{ fontFamily: "Josefin Sans", fontSize: "24px" }}
                 >
-                  Dictum morbi
+                 {data.Name}
                 </p>
               </div>
             </div>
@@ -100,8 +167,8 @@ function SingleProduct() {
               <span style={{ color: "blue" }}>(22)</span>
             </div>
             <div>
-              <span className="card-price">$26.00</span>
-              <span className="card-price-former">$52.00</span>
+              <span className="card-price">${data.Price}</span>
+              <span className="card-price-former">${data.SlicedPercentage}</span>
             </div>
             <div className="item-description">
               <p
@@ -111,11 +178,10 @@ function SingleProduct() {
                   fontFamily: "Josefin Sans",
                 }}
               >
-                Color
+                Color : {data.Color}
               </p>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Magna
-                in est adipiscing in phasellus non in justo.
+                    {data.Description}
               </p>
             </div>
             <div style={{ marginLeft: "30px" }}>
@@ -127,6 +193,7 @@ function SingleProduct() {
                   fontFamily: "Josefin Sans",
                   color: "blue",
                 }}
+                onClick={add_to_cart}
               >
                 Add To Cart
               </button>

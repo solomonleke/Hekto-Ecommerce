@@ -255,6 +255,10 @@ li{
   /* identical to box height */
   color: #111C85;
 }
+.link{
+  text-decoration: none;
+
+}
 .prices-bottom{
   margin-bottom: 20px;
 }
