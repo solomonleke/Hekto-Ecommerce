@@ -33,14 +33,24 @@ function App() {
 
 
 
+  // const [ProductData, setProductData] = useState(
+
+   
+
+  //   )
+
+
+
+
+
   const [CartLength, setCartLength] = useState(
     
-    cart_product.length
+    cart_product?.length
    
   );
   return (
     <div className="App">
-  <UserContext.Provider  value= {{CartLength, setCartLength, CartLength, setCartLength}}>
+  <UserContext.Provider  value= {{CartLength, setCartLength, cartTotal, setCartTotal}}>
 
    <BrowserRouter>
 

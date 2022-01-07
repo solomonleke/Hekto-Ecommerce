@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { UserContext } from '../Context/UserContext';
 
 export default function Card(props) {
 
 
   // const add_to_cart = props.addCart
-
+  const {CartLength, setCartLength} = useContext(UserContext)
   
       const add_to_cart = (() =>{
 
@@ -21,7 +22,7 @@ export default function Card(props) {
           if(names.includes(props.product_name)){
             return alert("Product Already in Cart");
           }else{
-            cartItems.push({ "image":props.product_img, "qty": 3, "name":props.product_name, "price":props.current_price, "color":props.product_color, "size":props.product_size}
+            cartItems.push({ "image":props.product_img, "id": props.id, "qty": 1, "name":props.product_name, "price":props.current_price, "color":props.product_color, "size":props.product_size}
             )
             localStorage.setItem("productsCart", JSON.stringify(cartItems));
 
@@ -29,14 +30,14 @@ export default function Card(props) {
               return accumulator + item.qty * item.price;
             }, 0);
             
-            localStorage.setItem("total", totalPrice);
-            // setCart(cartItems.length)
+            localStorage.setItem("total", parseInt(cartTotal) + parseInt( props.current_price));
+            setCartLength(cartItems.length)
           }
         }else{
-          cartItems = [{ "image":props.product_img, "qty": 3, "name":props.product_name, "price":props.current_price, "color":props.product_color, "size":props.product_size}]
+          cartItems = [{ "image":props.product_img, "qty": 1, "id": props.id, "name":props.product_name, "price":props.current_price, "color":props.product_color, "size":props.product_size}]
           localStorage.setItem("total", props.current_price);
           localStorage.setItem("productsCart", JSON.stringify(cartItems));
-          // setCart(cartItems.length)
+          setCartLength(cartItems.length)
         }
 
         // const cart =[

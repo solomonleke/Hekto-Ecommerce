@@ -16,7 +16,7 @@ function ShoppingCart() {
     
    const cartTotal = JSON.parse(localStorage.getItem("total"));
     
-    setData(JSON.parse(localStorage.getItem("total")));
+    setData(cartTotal);
     
     
   })
@@ -25,15 +25,20 @@ function ShoppingCart() {
   const cart_product = JSON.parse(localStorage.getItem("productsCart"));
   
   console.log("data", data)
+
   useEffect(() => {
 
-    setData(JSON.parse(localStorage.getItem("total")));
+   Total()
 
       return () => {
         
       }
-  }, [])
+  }, [Total])
   const {CartLength, setCartLength} = useContext(UserContext)
+
+
+  
+
 
   const clearCart = (() =>{
 
@@ -68,12 +73,17 @@ function ShoppingCart() {
               </div>
 
               {
-                
-                
+                cart_product ==null ? (
+                      <h1 className="text-center">cart is empty</h1>
+                ) : (
+                     
                 cart_product.map((item, index) => (
       
-                  <CartProduct  key = {index} idx = {index}  img={item.image} price={item.price} qty={item.qty} name={item.name} color={item.color} size={item.size} />
+                  <CartProduct  key = {index} idx = {index} id={item.id}  img={item.image} wholeProduct = {cart_product} price={item.price} qty={item.qty} name={item.name} color={item.color} size={item.size} />
                 ))
+                )
+                
+               
               }
              
              

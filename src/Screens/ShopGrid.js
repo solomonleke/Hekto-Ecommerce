@@ -199,6 +199,7 @@ export default function ShopGrid() {
           
                             <Card
                             product_name = {item.Name}
+                            id = {item.id}
                             product_color = {item.Color}
                             product_size = {item.Size}
                             product_img = {item.Picture_url1}
