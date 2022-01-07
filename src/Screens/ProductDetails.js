@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Description from '../Components/Description'
 import Header from '../Components/Header'
 import Nav from '../Components/Nav'
@@ -7,6 +7,10 @@ import RelatedProduct from '../Components/RelatedProduct'
 import SingleProduct from '../Components/SingleProduct'
 
 export default function ProductDetails() {
+
+  const [data, setdata] = useState([]);
+
+  
   return (
     <div>
     <Nav/>

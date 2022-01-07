@@ -1,6 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 function SingleProduct() {
+
+  const [data, setdata] = useState([]);
+
+
+
+  const fetch_single_product = (() => {
+    fetch_single_product
+        fetch(`http://localhost:8000/api/products/${id}`)
+        .then(res => res.json())
+        .then(json => {
+            
+          console.log(json.products)
+            // console.log(json);
+            localStorage.setItem('data', JSON.stringify(json.data));
+            setdata(json.products);
+        })
+        .catch(error => {
+            
+          console.log("error", error);
+          
+      })
+      })
+
+
+  useEffect(() => {
+
+    fetch_single_product()
+
+  }, [])
     return (
         <div className="container">
       <div

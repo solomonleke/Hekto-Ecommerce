@@ -62,7 +62,7 @@ function App() {
       <Route path="/contact" element = {<Contact/>} />
       <Route path="/shopList" element = {<ShopLeft/>} />
       <Route path="/shopGrid" element = {<ShopGrid/>} />
-      <Route path="/product-details" element = {<ProductDetails/>} />
+      <Route path="/product-details/:id" element = {<ProductDetails/>} />
     
       <Route path="/login" element = {<Login/>} />
       <Route path="/register" element = {<Register/>} />

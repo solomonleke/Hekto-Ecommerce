@@ -2,22 +2,48 @@ import Header from "../Components/Header";
 import Nav from "../Components/Nav";
 import ProductCard from "../Components/ProductCard";
 import React, { useEffect, useState } from 'react'
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Card from "../Components/Card";
 
 export default function ShopGrid() {
     const [data, setData] = useState([])
+    const [paginate, setPaginate] = useState("")
   const [update, setUpdate] = useState("")
+
+
+
+
 
   // const userContext = createContext()
 
+  console.log("paginate", paginate)
+
   const fetch_product = (() =>{
 
+    if(paginate >= 1){
+        fetch(`http://localhost:8000/api/paginatedProducts/${paginate}`)
+        .then(res => res.json())
+        .then(json => {
+            
+          console.log( "page" , json)
+       
+            // console.log(json);
+            localStorage.setItem('data', JSON.stringify(json.data));
+            setData(json.data);
+        })
+        .catch(error => {
+            
+          console.log("error", error);
+          
+      })
+    }else{
+            
       fetch('http://localhost:8000/api/products')
       .then(res => res.json())
       .then(json => {
           
         console.log(json.products)
+     
           // console.log(json);
           localStorage.setItem('data', JSON.stringify(json.data));
           setData(json.products);
@@ -27,8 +53,34 @@ export default function ShopGrid() {
         console.log("error", error);
         
     })
+    }
+
 
   })
+
+  const paginated_product = ((paginate_id) =>{
+
+    if(paginate !== null){
+        fetch(`http://localhost:8000/api/paginatedProducts/${paginate_id}`)
+        .then(res => res.json())
+        .then(json => {
+            
+          console.log( "page" , json.data)
+       
+            // console.log(json);
+            localStorage.setItem('data', JSON.stringify(json.data));
+            setData(json.data);
+        })
+        .catch(error => {
+            
+          console.log("error", error);
+          
+      })
+    }
+
+  
+
+})
 
   const updated = (jsn) =>{
     setUpdate(jsn)
@@ -38,11 +90,12 @@ export default function ShopGrid() {
   useEffect(() => {
 
      fetch_product()
-
+    
+   
       return () => {
         
       }
-  }, [])
+  }, [paginate])
 
 
     return (
@@ -69,7 +122,7 @@ export default function ShopGrid() {
                     <div className="col-lg-6 d-inline-flex">
                     <div className="search-div1">
                         <span className="search-text filter-icon">Per Page:</span>
-                        <input className="search-input" size={1} type="text" />
+                        <input className="search-input" size={1} value={paginate} onChange={((e) =>(setPaginate(e.target.value)))} type="text" />
                     </div>
                     <div className="search-div2">
                         <span className="search-text filter-icon">Sort By:</span>
@@ -216,9 +269,9 @@ export default function ShopGrid() {
           
                       }
                    
-                 
+                      <span></span>
                     </div>
-
+                      
                     </div>
                 </div>
                 </div>

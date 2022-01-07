@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { Link } from 'react-router-dom';
 import { UserContext } from '../Context/UserContext';
 
 export default function Card(props) {
@@ -60,8 +61,10 @@ export default function Card(props) {
               <i className="far fa-heart item-action-grid" />
               <i className="fas fa-search-plus item-action-grid" />
               </div>
+              <Link to={`/product-details/${props.id}`}> 
               <img src={`http://localhost:8000/images/${props.product_img}`} alt="" className="card-img-top product-img-grid" />
-
+              </Link>
+              
 
           </div>
         

@@ -297,6 +297,7 @@ li{
 
 .item-actions{
   padding-right: 2rem;
+  cursor: pointer;
 }
 
 .supporter{
@@ -694,4 +695,8 @@ li{
   border-radius: 100%;
   
 }
-
+.empty{
+  text-transform: uppercase;
+  font-size: 25px;
+  color: #FB2E86;
+}

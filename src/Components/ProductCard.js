@@ -1,6 +1,43 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { UserContext } from '../Context/UserContext';
 
 export default function ProductCard(props) {
+
+
+  const {CartLength, setCartLength} = useContext(UserContext)
+  
+  const add_to_cart = (() =>{
+
+    let cartItems = JSON.parse(localStorage.getItem("productsCart"));
+    let cartTotal = JSON.parse(localStorage.getItem("total"));
+    
+
+    if(cartItems !==null){
+
+      let names =[]
+      for (let i=0; i <cartItems.length; i++){
+        names.push(cartItems[i].name)
+      }
+      if(names.includes(props.product_name)){
+        return alert("Product Already in Cart");
+      }else{
+        cartItems.push({ "image":props.product_img, "id": props.id, "qty": 1, "name":props.product_name, "price":props.current_price, "color":props.product_color, "size":props.product_size}
+        )
+        localStorage.setItem("productsCart", JSON.stringify(cartItems));
+
+        // update the total price in the local Storage
+        localStorage.setItem("total", parseInt(cartTotal) + parseInt( props.current_price));
+        setCartLength(cartItems.length)
+      }
+    }else{
+      cartItems = [{ "image":props.product_img, "qty": 1, "id": props.id, "name":props.product_name, "price":props.current_price, "color":props.product_color, "size":props.product_size}]
+      localStorage.setItem("total", props.current_price);
+      localStorage.setItem("productsCart", JSON.stringify(cartItems));
+      setCartLength(cartItems.length)
+    }
+
+  })
+  
     return (
         <div className="card card-pro">
                 <div className="card-body">
@@ -36,7 +73,7 @@ export default function ProductCard(props) {
                         <p>{props.short_desc}</p>
                       </div>
                       <div className>
-                        <i className="fas fa-cart-plus item-actions" />
+                        <i className="fas fa-cart-plus item-actions"  onClick={add_to_cart} />
                         <i className="far fa-heart item-actions" />
                         <i className="fas fa-search-plus item-actions" />
                       </div>

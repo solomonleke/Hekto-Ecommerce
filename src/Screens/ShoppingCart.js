@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CalculateShopping from "../Components/CalculateShopping";
 import CartProduct from "../Components/CartProduct";
 import CartTotals from "../Components/CartTotals";
@@ -8,6 +9,7 @@ import Nav from "../Components/Nav";
 import { UserContext } from "../Context/UserContext";
 
 function ShoppingCart() {
+  const navigate = useNavigate();
 
   const [data, setData] = useState("")
   
@@ -46,6 +48,11 @@ function ShoppingCart() {
     setCartLength(0)
   })
 
+  const update_cart = (() => {
+    navigate("/shopList")
+
+  })
+
   return (
     <div>
     <Nav/>
@@ -57,7 +64,10 @@ function ShoppingCart() {
         <div className="shopping-cart">
           <div className="row">
             <div className="col-lg-8">
-              <div className="row">
+            {
+              cart_product !== null ? (
+
+                <div className="row">
                 <div className="col-lg-6">
                   <h6 className="mb-4">Product</h6>
                 </div>
@@ -72,9 +82,12 @@ function ShoppingCart() {
                 </div>
               </div>
 
+              ): ("")
+            }
+              
               {
                 cart_product ==null ? (
-                      <h1 className="text-center">cart is empty</h1>
+                      <h1 className="text-center empty"> cart is empty </h1>
                 ) : (
                      
                 cart_product.map((item, index) => (
@@ -87,14 +100,20 @@ function ShoppingCart() {
               }
              
              
-
-
-              <div className="row">
-                  <div className="col-lg-3"><button className="update-cart-btn">Update Cart</button></div>
+              {
+                cart_product !== null ? (
+                  <div className="row">
+                  <div className="col-lg-3"><button className="update-cart-btn" onClick={update_cart}>Update Cart</button></div>
                   <div className="col-lg-3"></div>
                   <div className="col-lg-3"></div>
                   <div className="col-lg-3"><button className="clear-cart-btn" onClick={clearCart}>Clear Cart</button></div>
               </div>
+                ) : (
+                  ""
+                )
+              }
+
+             
             </div>
             <div className="col-lg-4">
               <h6 style={{ textAlign: "center" }} className="mb-4">
