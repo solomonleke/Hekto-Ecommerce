@@ -28,20 +28,10 @@ function App() {
 
 
 
-  // console.log( "length", cart_product.length)
-  const [cartTotal, setCartTotal] = useState(0)
 
-
-
-  // const [ProductData, setProductData] = useState(
-
-   
-
-  //   )
-
-
-
-
+  const [cartTotal, setCartTotal] = useState(0);
+  const [jwt, setJwt]= useState('');
+  const [userId, setUserId]= useState('');
 
   const [CartLength, setCartLength] = useState(
     
@@ -50,7 +40,7 @@ function App() {
   );
   return (
     <div className="App">
-  <UserContext.Provider  value= {{CartLength, setCartLength, cartTotal, setCartTotal}}>
+  <UserContext.Provider  value= {{CartLength, setCartLength, cartTotal, setCartTotal,jwt, setJwt, userId, setUserId}}>
 
    <BrowserRouter>
 

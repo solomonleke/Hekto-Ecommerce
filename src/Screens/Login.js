@@ -1,12 +1,70 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Header from '../Components/Header'
 import Nav from '../Components/Nav'
 import PreFooter from '../Components/PreFooter'
+import { UserContext } from '../Context/UserContext'
 
 export default function Login() {
+    const {jwt, setJwt}= useContext(UserContext);
+    const {userId, setUserId}= useContext(UserContext);
+    const navigate = useNavigate();
+    const [payload, setPayload] = useState({
+        email:"",
+        password:""
+    })
 
-    
+    const handleChange = (e) =>{
+        setPayload({...payload, [e.target.id]: e.target.value})
+    }
+
+    const handleSubmit = () =>{
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        // myHeaders.append("Authorization","Bearer" + JSON.parse(localStorage.getItem('jwt')));
+
+        var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(payload),
+        redirect: 'follow'
+        };
+
+        fetch("http://127.0.0.1:8000/api/login", requestOptions)
+        .then(response => response.json())
+        .then(result =>{
+            // console.log('id', result.user.id);
+                if(result){
+                    setJwt(result.jwt)
+                    setUserId( result.user.id)
+                    localStorage.setItem("jwt", JSON.stringify(result.token));
+                    localStorage.setItem("user_id", result.user.id);
+                    navigate('/shopList');
+                }
+                
+            }
+         )
+        .catch(error =>{
+            alert("Something went wrong! Please check your internet connection....");
+             console.log('error', error)
+        
+        });  
+    }
+
+  
+    const checkUser=()=>{
+        if(localStorage.getItem('jwt')){
+            navigate('/shopList');
+        }else{
+            navigate('/login');
+        }
+    }
+
+    useEffect(() => {
+        checkUser()
+      }, [])
+
+
     return (
         <div> 
         <Nav/>
@@ -20,10 +78,10 @@ export default function Login() {
             <h4 style={{textAlign: "center"}} id="login-txt">Login</h4>
             <p style={{textAlign: "center"}} className="login-txt mb-4">Please login using account details below</p>
             
-            <input className='login-input ' type="email" placeholder="Email address" /> <br /> <br />
-            <input className='login-input' type="password" placeholder="Password" />
+            <input className='login-input ' id='email' value={payload.email} type="email" onChange={handleChange} placeholder="Email address" /> <br /> <br />
+            <input className='login-input' id='password' value={payload.password} type="password" onChange={handleChange} placeholder="Password" />
             <p className="login-txt mt-4 mb-4">Forgot your password?</p>
-            <button className='login-btn' style={{color: "white"}}>Sign in</button>
+            <button className='login-btn' onClick={handleSubmit} style={{color: "white"}}>Sign in</button>
             <p className="login-txt mt-4" style={{textAlign: "center"}}>Don’t have an Account? <Link to="/register" className="form-link"> Create account</Link></p>
         </div>
 

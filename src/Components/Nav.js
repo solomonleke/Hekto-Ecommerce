@@ -1,29 +1,30 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../Context/UserContext'
 
 export default function Nav(props) {
-  
+
   const {CartLength, setCartLength} = useContext(UserContext)
 
-  // const [Length, setLength] = useState()
+  const navigate = useNavigate();
 
-  // const length = (() => {
+  const {userId, setUserId}= useContext(UserContext);
 
-  //   setLength(CartLength.length)
 
-  // })
-
-  // const chan
-
-  // useEffect(() => {
-  //   length()
-  //   return () => {
-     
-  //   }
-  // }, [])
 
   const cart_product = JSON.parse(localStorage.getItem("productsCart"));
+
+  const logout = (() =>{
+
+    localStorage.removeItem("jwt")
+    localStorage.removeItem("user_id")
+    navigate("/login")
+  })
+
+  useEffect(() => {
+    
+   
+  }, [userId])
     return (
         <div>
         <nav className="navbar head1 navbar-expand-lg navbar-light bg-light">
@@ -69,7 +70,14 @@ export default function Nav(props) {
                 </ul>
               </li>
               <li className="nav-item">
-                <Link to="/login" className="nav-link anc" >Login <i className="far fa-user" /></Link>
+              {
+                userId ? (
+                  <Link to="" onClick={logout} className="nav-link anc" > Logout  <i className="far fa-user" /></Link>
+                ): (
+                  <Link to="/login" className="nav-link anc" > Login  <i className="far fa-user" /></Link>
+                )
+              }
+               
               </li>
               <li className="nav-item">
                 <a className="nav-link anc" href="#">wishlist <i className="far fa-heart" /></a>
