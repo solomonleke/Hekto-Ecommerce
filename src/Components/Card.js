@@ -15,7 +15,6 @@ export default function Card(props) {
         
 
         if(cartItems !==null){
-          let data = { "image":props.product_img, "name":props.product_name, "price":props.current_price, "color":props.product_color, "size":props.product_size}
           let names =[]
           for (let i=0; i <cartItems.length; i++){
             names.push(cartItems[i].name)
@@ -27,10 +26,6 @@ export default function Card(props) {
             )
             localStorage.setItem("productsCart", JSON.stringify(cartItems));
 
-            let totalPrice = cartItems.reduce(function (accumulator, item) {
-              return accumulator + item.qty * item.price;
-            }, 0);
-            
             localStorage.setItem("total", parseInt(cartTotal) + parseInt( props.current_price));
             setCartLength(cartItems.length)
           }
@@ -41,14 +36,6 @@ export default function Card(props) {
           setCartLength(cartItems.length)
         }
 
-        // const cart =[
-        //   props.product_img, props.product_name, props.current_price, props.product_color, props.product_size
-        // ]
-
-
-        // localStorage.setItem('cart-data', JSON.stringify(cart));
-          
-            // alert(cart)
     })
     return (
     

@@ -15,7 +15,7 @@ function CartTotals() {
       >
         Shipping & taxes calculated at checkout
       </label>
-      <button className="proceed-btn2 mt-4">Proceed To Checkout</button>
+      <button className="proceed-btn2 mt-4">Buy Now</button>
     </div>
   );
 }

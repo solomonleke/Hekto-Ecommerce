@@ -1,16 +1,17 @@
 import React from 'react'
 
-function CheckoutProduct() {
+function CheckoutProduct({img, name, color, size, price, qty}) {
     return (
         <div >
         <div className="row demo-img">
           <div className="col-lg-4 ">
-            <img src=".././images/item1.png" alt="" />
+            <img src={`http://localhost:8000/images/${img}`} className="checkout_img" alt="" />
           </div>
           <div className="col-lg-8">
-            <h6>Ut diam consequat</h6>
-            <p>Color: Brown <span style={{float: "right"}}>$32.00</span></p>
-            <p>Size: XL</p>
+            <h6>{name}</h6>
+            <p>Color: {color} <span style={{float: "right"}}>${price}</span></p>
+            <p>Quantity: {qty}</p>
+            <p>Size: {size}</p>
           </div>
         </div>
             <hr/>

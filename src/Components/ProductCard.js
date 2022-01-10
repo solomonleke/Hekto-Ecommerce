@@ -22,7 +22,7 @@ export default function ProductCard(props) {
       if(names.includes(props.product_name)){
         return alert("Product Already in Cart");
       }else{
-        cartItems.push({ "image":props.product_img, "id": props.id, "qty": 1, "name":props.product_name, "price":props.current_price, "color":props.product_color, "size":props.product_size}
+        cartItems.push({ "image":props.product_img, "id": props.id, "qty": 1, "name":props.product_name, "color": props.color, "size": props.size, "price":props.current_price, "color":props.product_color, "size":props.product_size}
         )
         localStorage.setItem("productsCart", JSON.stringify(cartItems));
 
@@ -31,7 +31,7 @@ export default function ProductCard(props) {
         setCartLength(cartItems.length)
       }
     }else{
-      cartItems = [{ "image":props.product_img, "qty": 1, "id": props.id, "name":props.product_name, "price":props.current_price, "color":props.product_color, "size":props.product_size}]
+      cartItems = [{ "image":props.product_img, "qty": 1, "id": props.id, "name":props.product_name, "color": props.color, "size": props.size, "price":props.current_price, "color":props.product_color, "size":props.product_size}]
       localStorage.setItem("total", props.current_price);
       localStorage.setItem("productsCart", JSON.stringify(cartItems));
       setCartLength(cartItems.length)

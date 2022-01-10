@@ -12,6 +12,7 @@ function ShoppingCart() {
   const navigate = useNavigate();
 
   const [data, setData] = useState("")
+  const user_id = JSON.parse(localStorage.getItem("user_id"));
   
   const Total = (() =>{
     
@@ -52,6 +53,16 @@ function ShoppingCart() {
     navigate("/shopList")
 
   })
+  const checkout = () =>{
+
+    if(user_id == null){
+      navigate("/login")
+      alert("you must be logged in")
+    }else{
+      navigate("/product")
+    }
+
+  }
 
   return (
     <div>
@@ -132,7 +143,7 @@ function ShoppingCart() {
                     >
                       Shipping & taxes calculated at checkout
                     </label>
-                <button className="proceed-btn2 mt-4">Proceed To Checkout</button>
+                <button className="proceed-btn2 mt-4" onClick={checkout} >Proceed To Checkout</button>
                </div>
               <h6 style={{ textAlign: "center" }} className="mb-4 mt-4">
                 Calculate Shopping

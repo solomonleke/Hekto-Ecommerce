@@ -10,6 +10,8 @@ export default function ShopLeft() {
   const [update, setUpdate] = useState("")
   const [paginate, setPaginate] = useState("")
 
+  const [Category, setCategory] = useState([])
+
   // const userContext = createContext()\
 
 
@@ -53,6 +55,23 @@ export default function ShopLeft() {
 
   })
 
+  const fetch_category = ()=>{
+    fetch(`http://localhost:8000/api/category`)
+    .then(res => res.json())
+    .then(json => {
+        
+      console.log( "category" , json)
+    
+        localStorage.setItem('category', JSON.stringify(json.data));
+        setCategory(json);
+    })
+    .catch(error => {
+        
+      console.log("error", error);
+      
+  })
+  }
+
 
   const updated = (jsn) =>{
     setUpdate(jsn)
@@ -62,7 +81,7 @@ export default function ShopLeft() {
   useEffect(() => {
 
      fetch_product();
-
+     fetch_category();
       return () => {
         
       }
@@ -116,6 +135,22 @@ export default function ShopLeft() {
         <div className="main">
           <div className="row">
             <div className="col-lg-3">
+            <div className="right-filter">
+            <p>Categories</p>
+            <ul className="right-filter-ul">
+              {
+                Category.map((item)=>(
+
+                  <li className>
+                  <input className="form-check-input form-check-input2" value={item.categories} type="checkbox" defaultValue id="flexCheckDefault" />
+                  <label className="form-check-label">{item.categories}</label>
+                </li>
+                ))
+            
+              }
+
+            </ul>
+          </div>
               <div className="right-filter">
                 <p>Product Brand</p>
                 <ul className="right-filter-ul">
@@ -145,47 +180,7 @@ export default function ShopLeft() {
                   </li>
                 </ul>
               </div>
-              <div className="right-filter">
-                <p>Categories</p>
-                <ul className="right-filter-ul">
-                  <li className>
-                    <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">Prestashop</label>
-                  </li>
-                  <li className>
-                    <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">Magento</label>
-                  </li>
-                  <li className>
-                    <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">Bigcommerce</label>
-                  </li>
-                  <li className>
-                    <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">osCommerce</label>
-                  </li>
-                  <li className>
-                    <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">3dcart</label>
-                  </li>
-                  <li className>
-                    <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">Bags</label>
-                  </li>
-                  <li className>
-                    <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">Accessories</label>
-                  </li>
-                  <li className>
-                    <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">Jewellery</label>
-                  </li>
-                  <li className>
-                    <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">Watches</label>
-                  </li>
-                </ul>
-              </div>
+            
               <div className="right-filter">
                 <p>Price Filter</p>
                 <ul className="right-filter-ul">
@@ -221,6 +216,8 @@ export default function ShopLeft() {
                 <ProductCard
                 product_name = {item.Name}
                 id = {item.id}
+                product_color = {item.Color}
+                product_size = {item.Size}
                 product_img = {item.Picture_url1}
                 current_price ={item.Price}
                 formal_price ={item.SlicedPercentage}

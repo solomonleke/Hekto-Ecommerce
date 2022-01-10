@@ -9,6 +9,9 @@ export default function ShopGrid() {
     const [data, setData] = useState([])
     const [paginate, setPaginate] = useState("")
   const [update, setUpdate] = useState("")
+  const [Category, setCategory] = useState([])
+
+  const [CategoryCheck, setCategoryCheck] = useState("")
 
 
 
@@ -20,7 +23,28 @@ export default function ShopGrid() {
 
   const fetch_product = (() =>{
 
+    if(CategoryCheck !==""){
+
+        fetch(`http://localhost:8000/api/categoryCheck/${CategoryCheck}`)
+        .then(res => res.json())
+        .then(json => {
+            
+          console.log( "categorized" , json)
+       
+            // console.log(json);
+            localStorage.setItem('data', JSON.stringify(json.data));
+            setData(json);
+        })
+        .catch(error => {
+            
+          console.log("error", error);
+          
+      })
+    }else 
+    
     if(paginate >= 1){
+
+  
         fetch(`http://localhost:8000/api/paginatedProducts/${paginate}`)
         .then(res => res.json())
         .then(json => {
@@ -58,6 +82,23 @@ export default function ShopGrid() {
 
   })
 
+  const fetch_category = ()=>{
+    fetch(`http://localhost:8000/api/category`)
+    .then(res => res.json())
+    .then(json => {
+        
+      console.log( "category" , json)
+    
+        localStorage.setItem('category', JSON.stringify(json.data));
+        setCategory(json);
+    })
+    .catch(error => {
+        
+      console.log("error", error);
+      
+  })
+  }
+
   
   const updated = (jsn) =>{
     setUpdate(jsn)
@@ -67,12 +108,11 @@ export default function ShopGrid() {
   useEffect(() => {
 
      fetch_product()
-    
-   
+     fetch_category();
       return () => {
         
       }
-  }, [paginate])
+  }, [paginate, CategoryCheck])
 
 
     return (
@@ -123,6 +163,21 @@ export default function ShopGrid() {
                 <div className="row">
                     <div className="col-lg-3">
                     <div className="right-filter">
+                        <p>Categories</p>
+                        <ul className="right-filter-ul">
+                        {
+                            Category.map((item)=>(
+        
+                              <li className>
+                              <input className="form-check-input form-check-input2" onChange={((e) =>(setCategoryCheck(e.target.value)))} value={item.categories} type="checkbox" defaultValue id="flexCheckDefault" />
+                              <label className="form-check-label">{item.categories}</label>
+                            </li>
+                            ))
+                        
+                          }
+                        </ul>
+                    </div>
+                    <div className="right-filter">
                         <p>Product Brand</p>
                         <ul className="right-filter-ul">
                         <li className>
@@ -151,68 +206,28 @@ export default function ShopGrid() {
                         </li>
                         </ul>
                     </div>
+                    
                     <div className="right-filter">
-                        <p>Categories</p>
-                        <ul className="right-filter-ul">
-                        <li className>
-                            <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">Prestashop</label>
-                        </li>
-                        <li className>
-                            <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">Magento</label>
-                        </li>
-                        <li className>
-                            <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">Bigcommerce</label>
-                        </li>
-                        <li className>
-                            <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">osCommerce</label>
-                        </li>
-                        <li className>
-                            <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">3dcart</label>
-                        </li>
-                        <li className>
-                            <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">Bags</label>
-                        </li>
-                        <li className>
-                            <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">Accessories</label>
-                        </li>
-                        <li className>
-                            <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">Jewellery</label>
-                        </li>
-                        <li className>
-                            <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">Watches</label>
-                        </li>
-                        </ul>
-                    </div>
-                    <div className="right-filter">
-                        <p>Price Filter</p>
-                        <ul className="right-filter-ul">
-                        <li className>
-                            <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">$0.00 - $150.00</label>
-                        </li>
-                        <li className>
-                            <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">$150.00 - $350.00</label>
-                        </li>
-                        <li className>
-                            <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">$150.00 - $504.00</label>
-                        </li>
-                        <li className>
-                            <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">$450.00 +</label>
-                        </li>
-                        </ul>
-                    </div>
+                    <p>Price Filter</p>
+                    <ul className="right-filter-ul">
+                      <li className>
+                        <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
+                        <label className="form-check-label">$0.00 - $150.00</label>
+                      </li>
+                      <li className>
+                        <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
+                        <label className="form-check-label">$150.00 - $350.00</label>
+                      </li>
+                      <li className>
+                        <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
+                        <label className="form-check-label">$150.00 - $504.00</label>
+                      </li>
+                      <li className>
+                        <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
+                        <label className="form-check-label">$450.00 +</label>
+                      </li>
+                    </ul>
+                  </div>
                     <span className="bottom-search">
                         <input type="text" size className="search search-text" style={{width: '65%'}} />
                         <i className="fas fa-search input-search-icon" />

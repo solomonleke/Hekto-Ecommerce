@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import {  useNavigate } from 'react-router'
 import { UserContext } from '../Context/UserContext'
 
 export default function Nav(props) {
@@ -7,7 +8,7 @@ export default function Nav(props) {
   const {CartLength, setCartLength} = useContext(UserContext)
 
   const navigate = useNavigate();
-
+  
   const {userId, setUserId}= useContext(UserContext);
 
 
@@ -16,8 +17,8 @@ export default function Nav(props) {
 
   const logout = (() =>{
 
-    localStorage.removeItem("jwt")
-    localStorage.removeItem("user_id")
+    localStorage.clear()
+    setUserId("empty")
     navigate("/login")
   })
 
@@ -72,7 +73,7 @@ export default function Nav(props) {
               <li className="nav-item">
               {
                 userId ? (
-                  <Link to="" onClick={logout} className="nav-link anc" > Logout  <i className="far fa-user" /></Link>
+                  <a onClick={logout} className="nav-link anc" style={ {cursor: "pointer"}} > Logout  <i className="far fa-user" /></a>
                 ): (
                   <Link to="/login" className="nav-link anc" > Login  <i className="far fa-user" /></Link>
                 )
