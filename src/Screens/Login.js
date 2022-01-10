@@ -13,6 +13,7 @@ export default function Login() {
         email:"",
         password:""
     })
+    let intended = JSON.parse(localStorage.getItem("route"));
 
     const handleChange = (e) =>{
         setPayload({...payload, [e.target.id]: e.target.value})
@@ -38,8 +39,15 @@ export default function Login() {
                     setJwt(result.jwt)
                     setUserId( result.user.id)
                     localStorage.setItem("jwt", JSON.stringify(result.token));
+                    localStorage.setItem("email", JSON.stringify(result.user.email));
                     localStorage.setItem("user_id", result.user.id);
-                    navigate('/shopList');
+
+                    if(intended){
+                        navigate(intended)
+                    }else{
+                        navigate('/shopList');
+                    }   
+                    
                 }
                 
             }
@@ -51,10 +59,14 @@ export default function Login() {
         });  
     }
 
-  
+
+
     const checkUser=()=>{
         if(localStorage.getItem('jwt')){
-            navigate('/shopList');
+          
+         navigate('/shopList');
+            
+           
         }else{
             navigate('/login');
         }

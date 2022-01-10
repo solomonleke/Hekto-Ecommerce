@@ -10,7 +10,7 @@ export default function Nav(props) {
   const navigate = useNavigate();
   
   const {userId, setUserId}= useContext(UserContext);
-
+  const user_id = JSON.parse(localStorage.getItem("user_id"));
 
 
   const cart_product = JSON.parse(localStorage.getItem("productsCart"));
@@ -24,8 +24,8 @@ export default function Nav(props) {
 
   useEffect(() => {
     
-   
-  }, [userId])
+    
+  }, [user_id])
     return (
         <div>
         <nav className="navbar head1 navbar-expand-lg navbar-light bg-light">
@@ -72,7 +72,7 @@ export default function Nav(props) {
               </li>
               <li className="nav-item">
               {
-                userId ? (
+                user_id ? (
                   <a onClick={logout} className="nav-link anc" style={ {cursor: "pointer"}} > Logout  <i className="far fa-user" /></a>
                 ): (
                   <Link to="/login" className="nav-link anc" > Login  <i className="far fa-user" /></Link>

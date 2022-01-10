@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import CartTotals from "../Components/CartTotals";
 import CheckoutProduct from "../Components/CheckoutProduct";
 import Footer from "../Components/Footer";
 import Header from "../Components/Header";
 import Nav from "../Components/Nav";
+import { UserContext } from "../Context/UserContext";
 
 function ShippingInfo() {
 
   const [data, setdata] = useState([]);
 
   const [total, setTotal] = useState("");
+
+  const { userInfo, setUserInfo}= useContext(UserContext);
 
   const [contacts, setContacts] = useState({
     email:'',
@@ -118,6 +121,8 @@ function ShippingInfo() {
                    
                 ));
                 setButton('Update')
+
+                setUserInfo(result)
             }else{
                 setButton('Save')
             }
@@ -251,9 +256,10 @@ useEffect(() => {
 
           {
             cart_product !==null ? (
-              cart_product.map((item) =>(
+              cart_product.map((item, i) =>(
 
                 <CheckoutProduct
+                key={i}
                       name={item.name}
                       color={item.color}
                       size={item.size}

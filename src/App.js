@@ -19,7 +19,10 @@ import About from './Screens/About';
 import Contact from './Screens/Contact';
 import { UserContext } from './Context/UserContext';
 import { useContext, useState } from 'react';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
+toast.configure()
 function App() {
 
 
@@ -32,6 +35,7 @@ function App() {
   const [cartTotal, setCartTotal] = useState(0);
   const [jwt, setJwt]= useState('');
   const [userId, setUserId]= useState('');
+  const [userInfo, setUserInfo]= useState("");
 
   const [CartLength, setCartLength] = useState(
     
@@ -40,7 +44,7 @@ function App() {
   );
   return (
     <div className="App">
-  <UserContext.Provider  value= {{CartLength, setCartLength, cartTotal, setCartTotal,jwt, setJwt, userId, setUserId}}>
+  <UserContext.Provider  value= {{CartLength, setCartLength, cartTotal, setCartTotal,jwt, setJwt, userId, setUserId, userInfo, setUserInfo}}>
 
    <BrowserRouter>
 

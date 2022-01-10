@@ -1,8 +1,13 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom';
 import { UserContext } from '../Context/UserContext';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 
-export default function Card(props) {
+
+toast.configure()
+
+export default function Card(props) {   
 
 
   // const add_to_cart = props.addCart
@@ -20,7 +25,7 @@ export default function Card(props) {
             names.push(cartItems[i].name)
           }
           if(names.includes(props.product_name)){
-            return alert("Product Already in Cart");
+            return toast.info("Product Already in Cart", {position: toast.POSITION.TOP_CENTER, autoClose: 2500});
           }else{
             cartItems.push({ "image":props.product_img, "id": props.id, "qty": 1, "name":props.product_name, "price":props.current_price, "color":props.product_color, "size":props.product_size}
             )
@@ -28,11 +33,14 @@ export default function Card(props) {
 
             localStorage.setItem("total", parseInt(cartTotal) + parseInt( props.current_price));
             setCartLength(cartItems.length)
+            let msg = props.product_name + " " + "added to cart"
+            toast.success(msg, {position: toast.POSITION.TOP_CENTER, autoClose: 2500});
           }
         }else{
           cartItems = [{ "image":props.product_img, "qty": 1, "id": props.id, "name":props.product_name, "price":props.current_price, "color":props.product_color, "size":props.product_size}]
           localStorage.setItem("total", props.current_price);
           localStorage.setItem("productsCart", JSON.stringify(cartItems));
+
           setCartLength(cartItems.length)
         }
 

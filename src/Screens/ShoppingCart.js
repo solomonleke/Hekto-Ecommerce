@@ -7,6 +7,12 @@ import Footer from "../Components/Footer";
 import Header from "../Components/Header";
 import Nav from "../Components/Nav";
 import { UserContext } from "../Context/UserContext";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+
+
+toast.configure()
+
 
 function ShoppingCart() {
   const navigate = useNavigate();
@@ -56,8 +62,12 @@ function ShoppingCart() {
   const checkout = () =>{
 
     if(user_id == null){
+      let intendedRoute = "/product";
+      
+      localStorage.setItem("route", JSON.stringify(intendedRoute));
       navigate("/login")
-      alert("you must be logged in")
+    
+      toast.error("Please Log in", {position: toast.POSITION.TOP_CENTER, autoClose: 3000});
     }else{
       navigate("/product")
     }
