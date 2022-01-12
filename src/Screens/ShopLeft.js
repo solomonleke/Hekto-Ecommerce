@@ -11,11 +11,63 @@ export default function ShopLeft() {
   const [paginate, setPaginate] = useState("")
 
   const [Category, setCategory] = useState([])
+  const [CategoryCheck, setCategoryCheck] = useState("");
 
-  // const userContext = createContext()\
+  const [HoldBrand, setHoldBrand] = useState([])
+  const [Brand, setBrand] = useState("")
+  const [BrandFilter, setBrandFilter] = useState("")
 
 
+
+
+
+ 
+  const handleCategory = (e)=>{
+
+    if(e.target.checked === true){
+
+      setCategoryCheck(e.target.value)
+      setBrand(e.target.id)
+      console.log("id_cat" ,e.target.id);
+    }else{
+      setCategoryCheck("")
+      setBrand("")
+    }
+  }
+
+  const handleBrand = (e)=>{
+
+    if(e.target.checked === true){
+
+      setBrandFilter(e.target.value)
+      
+    }else{
+
+      setBrandFilter("")
+     
+    }
+  }
+  
+  
   const fetch_product = (() =>{
+
+    if(CategoryCheck !== ""){
+
+      fetch(`http://localhost:8000/api/categoryCheck/${CategoryCheck}`)
+      .then(res => res.json())
+      .then(json => {  
+
+        console.log( "categorized" , json)
+     
+          setData(json);
+      })
+      .catch(error => {
+          
+        console.log("error", error);
+        
+    })
+
+  }else 
 
     if(paginate >= 1){
         fetch(`http://localhost:8000/api/paginatedProducts/${paginate}`)
@@ -41,7 +93,6 @@ export default function ShopLeft() {
           
         console.log(json.products)
      
-          // console.log(json);
           localStorage.setItem('data', JSON.stringify(json.data));
           setData(json.products);
       })
@@ -72,6 +123,30 @@ export default function ShopLeft() {
   })
   }
 
+  
+  const fetch_brand = ()=>{
+    
+  
+
+      if(Brand !== ""){
+        fetch(`http://localhost:8000/api/brand/${Brand}`)
+        .then(res => res.json())
+        .then(brand => {
+          console.log( "cat_id" , Brand)
+          console.log( "brand" , brand)
+          setHoldBrand(brand);
+        })
+        .catch(error => {
+            
+          console.log("error", error);
+          
+      })
+      }
+  }
+
+
+  
+
 
   const updated = (jsn) =>{
     setUpdate(jsn)
@@ -82,10 +157,11 @@ export default function ShopLeft() {
 
      fetch_product();
      fetch_category();
+     fetch_brand();
       return () => {
         
       }
-  }, [paginate])
+  }, [paginate , CategoryCheck, Brand, BrandFilter])
 
     return (
         <div>
@@ -142,7 +218,7 @@ export default function ShopLeft() {
                 Category.map((item)=>(
 
                   <li className>
-                  <input className="form-check-input form-check-input2" value={item.categories} type="checkbox" defaultValue id="flexCheckDefault" />
+                  <input className="form-check-input form-check-input2"  onChange={handleCategory} value={item.categories} id={item.id} type="checkbox" defaultValue />
                   <label className="form-check-label">{item.categories}</label>
                 </li>
                 ))
@@ -154,30 +230,26 @@ export default function ShopLeft() {
               <div className="right-filter">
                 <p>Product Brand</p>
                 <ul className="right-filter-ul">
-                  <li className>
-                    <input className="form-check-input form-check-input3" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">Coaster Furniture</label>
+
+                {
+                  Brand !=="" ? (
+                    HoldBrand.map((item) =>(
+                      <li className>
+                      <input id={item.id} className="form-check-input form-check-input3" value={item.brand} onChange={handleBrand} type="checkbox" defaultValue  />
+                      <label className="form-check-label">{item.brand}</label>
+                    </li>
+                    
+                    ))
+                  ):(
+                    <li className>
+                    <input  className="form-check-input form-check-input3" checked  type="checkbox" defaultValue   />
+                    <label className="form-check-label">All Brand</label>
                   </li>
-                  <li className>
-                    <input className="form-check-input form-check-input3" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">Fusion Dot High Fashion</label>
-                  </li>
-                  <li className>
-                    <input className="form-check-input form-check-input3" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">Unique Furnitture Restore</label>
-                  </li>
-                  <li className>
-                    <input className="form-check-input form-check-input3" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">Dream Furnitture Flipping</label>
-                  </li>
-                  <li className>
-                    <input className="form-check-input form-check-input3" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">Young Repurposed</label>
-                  </li>
-                  <li className>
-                    <input className="form-check-input form-check-input3" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">Green DIY furniture</label>
-                  </li>
+                  )
+                }
+               
+
+                
                 </ul>
               </div>
             
@@ -210,6 +282,32 @@ export default function ShopLeft() {
             <div className="col-lg-9">
 
             {
+              BrandFilter !== "" ? (
+
+                data.filter(data => data.Brand_id == BrandFilter)
+              
+              
+                .map((item) =>(
+  
+  
+                    <ProductCard
+                    product_name = {item.Name}
+                    id = {item.id}
+                    product_color = {item.Color}
+                    product_size = {item.Size}
+                    product_img = {item.Picture_url1}
+                    current_price ={item.Price}
+                    formal_price ={item.SlicedPercentage}
+                    short_desc = {item.Description}
+                    // addCart = {()=>add_to_cart()}
+                    />
+
+  
+                ))
+  
+
+              ): (
+                     
               data.map((item) =>(
 
 
@@ -222,9 +320,13 @@ export default function ShopLeft() {
                 current_price ={item.Price}
                 formal_price ={item.SlicedPercentage}
                 short_desc = {item.Description}
+                // addCart = {()=>add_to_cart()}
                 />
 
-              ))
+
+            ))
+
+              ) 
 
              
 

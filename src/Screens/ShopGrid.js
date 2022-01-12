@@ -9,9 +9,14 @@ export default function ShopGrid() {
     const [data, setData] = useState([])
     const [paginate, setPaginate] = useState("")
   const [update, setUpdate] = useState("")
-  const [Category, setCategory] = useState([])
 
-  const [CategoryCheck, setCategoryCheck] = useState("")
+
+  const [Category, setCategory] = useState([])
+  const [CategoryCheck, setCategoryCheck] = useState("");
+
+  const [HoldBrand, setHoldBrand] = useState([])
+  const [Brand, setBrand] = useState("")
+  const [BrandFilter, setBrandFilter] = useState("")
 
 
 
@@ -20,6 +25,34 @@ export default function ShopGrid() {
   // const userContext = createContext()
 
   console.log("paginate", paginate)
+
+ 
+  const handleCategory = (e)=>{
+
+    if(e.target.checked === true){
+
+      setCategoryCheck(e.target.value)
+      setBrand(e.target.id)
+      console.log("id_cat" ,e.target.id);
+    }else{
+      setCategoryCheck("")
+      setBrand("")
+    }
+  }
+
+  const handleBrand = (e)=>{
+
+    if(e.target.checked === true){
+
+      setBrandFilter(e.target.value)
+      
+    }else{
+
+      setBrandFilter("")
+     
+    }
+  }
+  
 
   const fetch_product = (() =>{
 
@@ -99,20 +132,40 @@ export default function ShopGrid() {
   })
   }
 
+  const fetch_brand = ()=>{
+
+    if(Brand !== ""){
+      fetch(`http://localhost:8000/api/brand/${Brand}`)
+      .then(res => res.json())
+      .then(brand => {
+        
+        setHoldBrand(brand);
+      })
+      .catch(error => {
+          
+        console.log("error", error);
+        
+    })
+    }
+}
+
   
   const updated = (jsn) =>{
     setUpdate(jsn)
  
   }
 
+
   useEffect(() => {
 
      fetch_product()
      fetch_category();
+     fetch_brand();
+     
       return () => {
         
       }
-  }, [paginate, CategoryCheck])
+  }, [paginate, CategoryCheck, Brand, BrandFilter])
 
 
     return (
@@ -169,7 +222,7 @@ export default function ShopGrid() {
                             Category.map((item)=>(
         
                               <li className>
-                              <input className="form-check-input form-check-input2" onChange={((e) =>(setCategoryCheck(e.target.value)))} value={item.categories} type="checkbox" defaultValue id="flexCheckDefault" />
+                              <input className="form-check-input form-check-input2" onChange={handleCategory} value={item.categories} type="checkbox" defaultValue id={item.id} />
                               <label className="form-check-label">{item.categories}</label>
                             </li>
                             ))
@@ -179,32 +232,25 @@ export default function ShopGrid() {
                     </div>
                     <div className="right-filter">
                         <p>Product Brand</p>
-                        <ul className="right-filter-ul">
-                        <li className>
-                            <input className="form-check-input form-check-input3" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">Coaster Furniture</label>
-                        </li>
-                        <li className>
-                            <input className="form-check-input form-check-input3" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">Fusion Dot High Fashion</label>
-                        </li>
-                        <li className>
-                            <input className="form-check-input form-check-input3" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">Unique Furnitture Restore</label>
-                        </li>
-                        <li className>
-                            <input className="form-check-input form-check-input3" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">Dream Furnitture Flipping</label>
-                        </li>
-                        <li className>
-                            <input className="form-check-input form-check-input3" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">Young Repurposed</label>
-                        </li>
-                        <li className>
-                            <input className="form-check-input form-check-input3" type="checkbox" defaultValue id="flexCheckDefault" />
-                            <label className="form-check-label">Green DIY furniture</label>
-                        </li>
-                        </ul>
+                            <ul className="right-filter-ul">
+                          
+                              {
+                                Brand !=="" ? (
+                                  HoldBrand.map((item) =>(
+                                    <li className>
+                                    <input id={item.id} className="form-check-input form-check-input3" value={item.brand} onChange={handleBrand}  type="checkbox" defaultValue   />
+                                    <label className="form-check-label">{item.brand}</label>
+                                  </li>
+                                  
+                                  ))
+                                ):(
+                                  <li className>
+                                  <input  className="form-check-input form-check-input3" checked  type="checkbox" defaultValue   />
+                                  <label className="form-check-label">All Brand</label>
+                                </li>
+                                )
+                              }
+                            </ul>
                     </div>
                     
                     <div className="right-filter">
@@ -239,24 +285,52 @@ export default function ShopGrid() {
                    
                   
                     {
+                        BrandFilter !== "" ? (
+
+                          data.filter(data => data.Brand_id == BrandFilter)
+                        
+                        
+                          .map((item) =>(
+            
+            
+                              <Card
+                              product_name = {item.Name}
+                              id = {item.id}
+                              product_color = {item.Color}
+                              product_size = {item.Size}
+                              product_img = {item.Picture_url1}
+                              current_price ={item.Price}
+                              formal_price ={item.SlicedPercentage}
+                              short_desc = {item.Description}
+                              // addCart = {()=>add_to_cart()}
+                              />
+          
+            
+                          ))
+            
+
+                        ): (
+                               
                         data.map((item) =>(
           
           
-                            <Card
-                            product_name = {item.Name}
-                            id = {item.id}
-                            product_color = {item.Color}
-                            product_size = {item.Size}
-                            product_img = {item.Picture_url1}
-                            current_price ={item.Price}
-                            formal_price ={item.SlicedPercentage}
-                            short_desc = {item.Description}
-                            // addCart = {()=>add_to_cart()}
-                            />
+                          <Card
+                          product_name = {item.Name}
+                          id = {item.id}
+                          product_color = {item.Color}
+                          product_size = {item.Size}
+                          product_img = {item.Picture_url1}
+                          current_price ={item.Price}
+                          formal_price ={item.SlicedPercentage}
+                          short_desc = {item.Description}
+                          // addCart = {()=>add_to_cart()}
+                          />
+      
         
-          
-                        ))
-          
+                      ))
+        
+                        ) 
+
                        
           
                       }
