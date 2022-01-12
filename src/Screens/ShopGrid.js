@@ -302,7 +302,7 @@ export default function ShopGrid() {
                               current_price ={item.Price}
                               formal_price ={item.SlicedPercentage}
                               short_desc = {item.Description}
-                              // addCart = {()=>add_to_cart()}
+                             
                               />
           
             
@@ -323,7 +323,7 @@ export default function ShopGrid() {
                           current_price ={item.Price}
                           formal_price ={item.SlicedPercentage}
                           short_desc = {item.Description}
-                          // addCart = {()=>add_to_cart()}
+                          
                           />
       
         

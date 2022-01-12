@@ -64,7 +64,7 @@ export default function Login() {
     const checkUser=()=>{
         if(localStorage.getItem('jwt')){
           
-         navigate('/shopList');
+         navigate('/login');
             
            
         }else{

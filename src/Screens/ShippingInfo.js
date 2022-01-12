@@ -121,10 +121,11 @@ function ShippingInfo() {
                    
                 ));
                 setButton('Update')
-
+                localStorage.setItem("contactInfo", JSON.stringify("true"));
                 setUserInfo(result)
             }else{
                 setButton('Save')
+                localStorage.setItem("contactInfo",  JSON.stringify("false"));
             }
             
         }
@@ -133,7 +134,7 @@ function ShippingInfo() {
 
 useEffect(() => {
    checkContact()
-}, [])
+}, [contacts])
 
 
   return (

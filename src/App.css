@@ -710,3 +710,6 @@ li{
 
 
 }
+.denied{
+  background-color: grey !important;
+}

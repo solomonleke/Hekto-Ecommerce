@@ -2,6 +2,12 @@ import React, { useContext } from "react";
 import { PaystackConsumer } from 'react-paystack';
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../Context/UserContext";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+
+
+toast.configure()
+
 
 function CartTotals() {
 
@@ -15,6 +21,13 @@ function CartTotals() {
 
   const reference =  (new Date()).getTime().toString();
 
+  let checkContact = JSON.parse(localStorage.getItem("contactInfo"));
+
+  const denied = () =>{
+
+ 
+    toast.error("contact info needed", {position: toast.POSITION.TOP_CENTER, autoClose: 2500});
+  }
 
   const config = {
     reference,
@@ -108,15 +121,22 @@ const componentProps = {
         Shipping & taxes calculated at checkout
       </label>
       
-      <PaystackConsumer {...componentProps} >
-      {({initializePayment}) => <button className="proceed-btn2 mt-4" onClick={() => {
-        fetch("http://localhost:8000/api/products")
-        .then(res=> saveOrder())
-        .then(res => initializePayment(handleSuccess, handleClose))
+      {
         
-       
-      }}>Buy Now</button>}
-    </PaystackConsumer>
+        checkContact === "true" ? (
+          <PaystackConsumer {...componentProps} >
+          {({initializePayment}) => <button className="proceed-btn2 mt-4" onClick={() => {
+            fetch("http://localhost:8000/api/products")
+            .then(res=> saveOrder())
+            .then(res => initializePayment(handleSuccess, handleClose))
+            
+           
+          }}>Buy Now</button>}
+        </PaystackConsumer>
+        ):(
+          <button onClick={denied} className="proceed-btn2 denied mt-4">Buy Now</button>
+        )
+      }
     </div>
   );
 }

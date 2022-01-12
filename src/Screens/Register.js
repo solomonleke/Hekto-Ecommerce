@@ -35,7 +35,8 @@ export default function Register() {
           if(result){
               localStorage.setItem("jwt", JSON.stringify(result.token));
               // console.log('register_result',result);
-              navigate('/shopGrid');
+              alert("Registered Successfully");
+              navigate('/login');
           }
           
           }
@@ -49,7 +50,7 @@ export default function Register() {
 
   const checkUser=()=>{
     if(localStorage.getItem('jwt')){
-        navigate('/shopGrid');
+        navigate('/register');
     }
 }
 
