@@ -3,6 +3,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import Header from '../Components/Header'
 import Nav from '../Components/Nav'
 import PreFooter from '../Components/PreFooter'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+
+
+toast.configure()
 
 export default function Register() {
 
@@ -34,15 +39,14 @@ export default function Register() {
       .then(result =>{
           if(result){
               localStorage.setItem("jwt", JSON.stringify(result.token));
-              // console.log('register_result',result);
-              alert("Registered Successfully");
+              toast.success('Registered Successfully', {position: toast.POSITION.TOP_CENTER, autoClose: 2500});
               navigate('/login');
           }
           
           }
        )
       .catch(error =>{
-          alert("Something went wrong! Please check your internet connection....");
+        toast.error('Something went wrong! Please check your internet connection....', {position: toast.POSITION.TOP_CENTER, autoClose: 2500});
            console.log('error', error)
       
       });

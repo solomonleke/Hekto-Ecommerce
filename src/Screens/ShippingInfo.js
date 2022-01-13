@@ -5,14 +5,23 @@ import Footer from "../Components/Footer";
 import Header from "../Components/Header";
 import Nav from "../Components/Nav";
 import { UserContext } from "../Context/UserContext";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+
+
+toast.configure()
 
 function ShippingInfo() {
 
   const [data, setdata] = useState([]);
 
+  const [ContactCheck, setContactCheck] = useState("");
+
   const [total, setTotal] = useState("");
 
   const { userInfo, setUserInfo}= useContext(UserContext);
+
+
 
   const [contacts, setContacts] = useState({
     email:'',
@@ -40,7 +49,8 @@ function ShippingInfo() {
         let contacted = contacts;
         contacted['user_id'] = user_id ;
         if (contacts.email==='' || contacts.lastname===''|| contacts.address===''|| contacts.city===''||contacts.country===''||contacts.postal===''){
-            alert('please fill up all the required fields')
+           
+            toast.error('Please Fill up all the Required Fields', {position: toast.POSITION.TOP_CENTER, autoClose: 2500});
         }else if(button === 'Update'){
             var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -57,13 +67,16 @@ function ShippingInfo() {
         .then(response => response.json())
         .then(result =>{
                 if(result){
-                    alert('contact updated saved.')
+                    toast.success('Contact Updated Successfully.', {position: toast.POSITION.TOP_CENTER, autoClose: 3500});
+                    setContactCheck(CheckINF)
+                    localStorage.setItem("contactInfo", JSON.stringify("true"));
+                    
                 }
                 
             }
          )
         .catch(error =>{
-            alert("Something went wrong! Please check your internet connection....");
+          toast.error('Something went wrong! Please check your internet connection....', {position: toast.POSITION.TOP_CENTER, autoClose: 2500});
              console.log('error', error)
         
         });
@@ -85,21 +98,23 @@ function ShippingInfo() {
         .then(result =>{
                 if(result){
                     setContacts({...contacts, [e.target.id]: ''})
-                    alert('contact succesfully saved.')
+
+                    toast.success('Contact Saved Successfully', {position: toast.POSITION.TOP_CENTER, autoClose: 3500});
+                  
                     console.log(result)
                 }
                 
             }
          )
         .catch(error =>{
-            alert("Something went wrong! Please check your internet connection....");
+          toast.error('Something went wrong! Please check your internet connection....', {position: toast.POSITION.TOP_CENTER, autoClose: 2500});
              console.log('error', error)
         
         });
 
     }
   })
-
+  const CheckINF = JSON.parse(localStorage.getItem("contactInfo"));
   const checkContact=(e)=>{
     let user_id = JSON.parse(localStorage.getItem('user_id'))
     fetch(`http://127.0.0.1:8000/api/contact/${user_id}`)
@@ -122,19 +137,23 @@ function ShippingInfo() {
                 ));
                 setButton('Update')
                 localStorage.setItem("contactInfo", JSON.stringify("true"));
+                setContactCheck(CheckINF)
+               
                 setUserInfo(result)
             }else{
                 setButton('Save')
                 localStorage.setItem("contactInfo",  JSON.stringify("false"));
+                setContactCheck(CheckINF)
             }
             
         }
      )
 }
 
+
 useEffect(() => {
    checkContact()
-}, [contacts])
+}, [ContactCheck, contacts])
 
 
   return (

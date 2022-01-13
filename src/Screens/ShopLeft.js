@@ -16,6 +16,8 @@ export default function ShopLeft() {
   const [HoldBrand, setHoldBrand] = useState([])
   const [Brand, setBrand] = useState("")
   const [BrandFilter, setBrandFilter] = useState("")
+  const [PriceFilter, setPriceFilter] = useState("")
+  const [Range, setRange] = useState("")
 
 
 
@@ -46,6 +48,31 @@ export default function ShopLeft() {
       setBrandFilter("")
      
     }
+  }
+
+  const handlePrice = (e)=>{
+
+    if(e.target.checked === true){
+
+      setPriceFilter(e.target.value)
+      setRange(e.target.id)
+        
+    }else{
+
+      setPriceFilter("")
+      setRange("")  
+    }
+  }
+
+  const handlePrice1 = (e)=>{
+
+    
+
+      setPriceFilter(e.target.value)
+      setRange(e.target.id)
+     
+      
+    
   }
   
   
@@ -256,37 +283,38 @@ export default function ShopLeft() {
               <div className="right-filter">
                 <p>Price Filter</p>
                 <ul className="right-filter-ul">
-                  <li className>
-                    <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">$0.00 - $150.00</label>
-                  </li>
-                  <li className>
-                    <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">$150.00 - $350.00</label>
-                  </li>
-                  <li className>
-                    <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">$150.00 - $504.00</label>
-                  </li>
-                  <li className>
-                    <input className="form-check-input form-check-input2" type="checkbox" defaultValue id="flexCheckDefault" />
-                    <label className="form-check-label">$450.00 +</label>
-                  </li>
-                </ul>
-              </div>
-              <span className="bottom-search">
-                <input type="text" size className="search search-text" style={{width: '65%'}} />
-                <i className="fas fa-search input-search-icon" />
+                <li className>
+                <input className="form-check-input form-check-input2" id={0} value={1500} onChange={(e)=>handlePrice(e)} type="checkbox" defaultValue  />
+                <label className="form-check-label">$0.00 - $1500.00</label>
+              </li>
+              <li className>
+                <input className="form-check-input form-check-input2" id={1500} value={3500} onChange={handlePrice}  type="checkbox" defaultValue  />
+                <label className="form-check-label">$1500.00 - $3500.00</label>
+              </li>
+              <li className>
+                <input className="form-check-input form-check-input2" id={1500} value={5000} onChange={handlePrice}  type="checkbox" defaultValue  />
+                <label className="form-check-label">$1500.00 - $5040.00</label>
+              </li>
+              <li className>
+                <input className="form-check-input form-check-input2" id={5000}  value={101000000} onChange={handlePrice}  type="checkbox" defaultValue />
+                <label className="form-check-label">$6000.00 +</label>
+              </li>
+            </ul>
+          </div>
+            <span className="bottom-search">
+                <input type="text" size className="search search-text" id={0}  value={PriceFilter} onChange={handlePrice1} style={{width: '65%'}} />
+                  <i className="fas fa-search input-search-icon" />
               </span>
             </div>
             <div className="col-lg-9">
 
-            {
-              BrandFilter !== "" ? (
+            {   
+              PriceFilter !== "" ? (
 
-                data.filter(data => data.Brand_id == BrandFilter)
               
-              
+                data.filter(data => (Number(data.Price)) >= Range && (Number(data.Price)) <= PriceFilter)
+                
+                
                 .map((item) =>(
   
   
@@ -299,38 +327,65 @@ export default function ShopLeft() {
                     current_price ={item.Price}
                     formal_price ={item.SlicedPercentage}
                     short_desc = {item.Description}
-                    // addCart = {()=>add_to_cart()}
+                   
                     />
 
   
                 ))
-  
 
-              ): (
+              ):(
+
+                BrandFilter !== "" ? (
+
+                  data.filter(data => data.Brand_id == BrandFilter)
+                
+                
+                  .map((item) =>(
+    
+    
+                      <ProductCard
+                      product_name = {item.Name}
+                      id = {item.id}
+                      product_color = {item.Color}
+                      product_size = {item.Size}
+                      product_img = {item.Picture_url1}
+                      current_price ={item.Price}
+                      formal_price ={item.SlicedPercentage}
+                      short_desc = {item.Description}
                      
-              data.map((item) =>(
+                      />
+  
+    
+                  ))
+    
+
+                ): (
+                       
+                data.map((item) =>(
+  
+  
+                  <ProductCard
+                  product_name = {item.Name}
+                  id = {item.id}
+                  product_color = {item.Color}
+                  product_size = {item.Size}
+                  product_img = {item.Picture_url1}
+                  current_price ={item.Price}
+                  formal_price ={item.SlicedPercentage}
+                  short_desc = {item.Description}
+                  
+                  />
 
 
-                <ProductCard
-                product_name = {item.Name}
-                id = {item.id}
-                product_color = {item.Color}
-                product_size = {item.Size}
-                product_img = {item.Picture_url1}
-                current_price ={item.Price}
-                formal_price ={item.SlicedPercentage}
-                short_desc = {item.Description}
-                // addCart = {()=>add_to_cart()}
-                />
+              ))
 
+                ) 
+              )
+               
 
-            ))
-
-              ) 
-
-             
-
-            }
+               
+  
+              }
              
 
             </div>

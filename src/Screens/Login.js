@@ -4,6 +4,11 @@ import Header from '../Components/Header'
 import Nav from '../Components/Nav'
 import PreFooter from '../Components/PreFooter'
 import { UserContext } from '../Context/UserContext'
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+
+
+toast.configure()
 
 export default function Login() {
     const {jwt, setJwt}= useContext(UserContext);
@@ -44,7 +49,9 @@ export default function Login() {
 
                     if(intended){
                         navigate(intended)
+                        toast.success('Login Successful. Welcome Back', {position: toast.POSITION.TOP_CENTER, autoClose: 2500});
                     }else{
+                        toast.success('Login Successful. Welcome Back', {position: toast.POSITION.TOP_CENTER, autoClose: 2500});
                         navigate('/shopList');
                     }   
                     
@@ -53,7 +60,7 @@ export default function Login() {
             }
          )
         .catch(error =>{
-            alert("Something went wrong! Please check your internet connection....");
+            toast.error('Wrong Credentials Detected', {position: toast.POSITION.TOP_CENTER, autoClose: 5000});
              console.log('error', error)
         
         });  

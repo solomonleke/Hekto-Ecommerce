@@ -23,8 +23,9 @@ export default function Nav(props) {
     setState("")
     navigate("/login")
     localStorage.removeItem("contactInfo")
+    localStorage.removeItem("route")
     localStorage.removeItem("jwt")
-    localStorage.removeItem("jwt")
+    localStorage.removeItem("user_id")
    
   })
 
