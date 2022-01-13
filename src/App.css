@@ -713,3 +713,7 @@ li{
 .denied{
   background-color: grey !important;
 }
+input[type="radio"] {
+  /* -webkit-appearance: checkbox; */
+
+}

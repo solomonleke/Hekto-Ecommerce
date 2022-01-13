@@ -14,6 +14,7 @@ function CartProduct({img, price, qty, name, idx, color, size, wholeProduct, id}
   const handleIncrement=()=>{
     let item = JSON.parse(localStorage.getItem('productsCart'));
     let itemTotal = JSON.parse(localStorage.getItem('total'));
+    let itemSubTotal = JSON.parse(localStorage.getItem('SubTotal'));
     wholeProduct.productqty += 1;
     setProductqty(productqty+1);
 
@@ -24,15 +25,18 @@ function CartProduct({img, price, qty, name, idx, color, size, wholeProduct, id}
     // itemTotal= productqty+1;
     localStorage.setItem("productsCart", JSON.stringify(item));
     console.log("productincart", item);
-    localStorage.setItem('total',parseInt(itemTotal) + parseInt(productPrice) );
-    setCartTotal(parseInt(itemTotal) + parseInt(productPrice));
+    localStorage.setItem('SubTotal',parseInt(itemTotal) + parseInt(productPrice) );
+    setCartTotal(parseInt(itemSubTotal) + parseInt(productPrice));
     // updateTotal()
     
 }
 
 const handleDecrement=()=>{
+
     let item = JSON.parse(localStorage.getItem('productsCart'));
     let itemTotal = JSON.parse(localStorage.getItem('total'));
+    let itemSubTotal = JSON.parse(localStorage.getItem('SubTotal'));
+    const Subtotal= (parseInt(itemTotal) - parseInt(productPrice))
     if (productqty === 1){
       // setProductqty = 1;
         alert('Quantity cannot be less than 1')
@@ -43,9 +47,10 @@ const handleDecrement=()=>{
         item[idx].qty = productqty-1;
         localStorage.setItem("productsCart", JSON.stringify(item));
         console.log("productincart", item);
-        localStorage.setItem('total',parseInt(itemTotal) - parseInt(productPrice));
-        setCartTotal(parseInt(itemTotal) - parseInt(productPrice));
+        localStorage.setItem('SubTotal', Subtotal);
+        setCartTotal(parseInt(itemSubTotal) - parseInt(productPrice));
     }
+   
       
 }
    

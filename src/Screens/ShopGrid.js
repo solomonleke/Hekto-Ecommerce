@@ -18,6 +18,8 @@ export default function ShopGrid() {
   const [Brand, setBrand] = useState("")
   const [BrandFilter, setBrandFilter] = useState("")
   const [PriceFilter, setPriceFilter] = useState("")
+
+  const [PriceFilter2, setPriceFilter2] = useState("")
   const [Range, setRange] = useState("")
 
 
@@ -69,7 +71,8 @@ export default function ShopGrid() {
   }
 
   const handlePrice1 = (e)=>{
-      setPriceFilter(e.target.value)
+
+      setPriceFilter2(e.target.value)
       setRange(e.target.id)  
   }
   
@@ -277,25 +280,29 @@ export default function ShopGrid() {
                     <p>Price Filter</p>
                     <ul className="right-filter-ul">
                       <li className>
-                        <input className="form-check-input form-check-input2" id={0} value={1500} onChange={(e)=>handlePrice(e)} type="checkbox" defaultValue  />
+                        <input className="form-check-input form-check-input2" id={0} value={292929292929292929292929} name="price" onChange={(e)=>handlePrice(e)} type="radio" defaultValue  />
+                        <label className="form-check-label">All price</label>
+                      </li>
+                      <li className>
+                        <input className="form-check-input form-check-input2" id={0} value={1500} name="price" onChange={(e)=>handlePrice(e)} type="radio" defaultValue  />
                         <label className="form-check-label">$0.00 - $1500.00</label>
                       </li>
                       <li className>
-                        <input className="form-check-input form-check-input2" id={1500} value={3500} onChange={handlePrice}  type="checkbox" defaultValue  />
+                        <input className="form-check-input form-check-input2" id={1500} value={3500} name="price" onChange={handlePrice}  type="radio" defaultValue  />
                         <label className="form-check-label">$1500.00 - $3500.00</label>
                       </li>
                       <li className>
-                        <input className="form-check-input form-check-input2" id={1500} value={5000} onChange={handlePrice}  type="checkbox" defaultValue  />
+                        <input className="form-check-input form-check-input2" id={1500} value={5000} name="price" onChange={handlePrice}  type="radio" defaultValue  />
                         <label className="form-check-label">$1500.00 - $5040.00</label>
                       </li>
                       <li className>
-                        <input className="form-check-input form-check-input2" id={5000}  value={101000000} onChange={handlePrice}  type="checkbox" defaultValue />
+                        <input className="form-check-input form-check-input2" id={5000}  value={101000000} name="price" onChange={handlePrice}  type="radio" defaultValue />
                         <label className="form-check-label">$6000.00 +</label>
                       </li>
                     </ul>
                   </div>
                     <span className="bottom-search">
-                        <input type="text" size className="search search-text" id={0}  value={PriceFilter} onChange={handlePrice1} style={{width: '65%'}} />
+                        <input type="text" size className="search search-text" id={0}  value={PriceFilter2} onChange={handlePrice1} style={{width: '65%'}} />
                         <i className="fas fa-search input-search-icon" />
                     </span>
                     </div>
@@ -304,13 +311,12 @@ export default function ShopGrid() {
                     
                    
                   
-                    {   
-                      PriceFilter !== "" ? (
+                    {  
+                      PriceFilter2 !=="" ? (
 
-                      
-                        data.filter(data => (Number(data.Price)) >= Range && (Number(data.Price)) <= PriceFilter)
-                        
-                        
+                        data.filter(data => (Number(data.Price)) >= Range && (Number(data.Price)) <= PriceFilter2)
+                          
+                          
                         .map((item) =>(
           
           
@@ -329,13 +335,14 @@ export default function ShopGrid() {
           
                         ))
 
+
                       ):(
+                        PriceFilter !== "" ? (
 
-                        BrandFilter !== "" ? (
-
-                          data.filter(data => data.Brand_id == BrandFilter)
-                        
-                        
+                      
+                          data.filter(data => (Number(data.Price)) >= Range && (Number(data.Price)) <= PriceFilter)
+                          
+                          
                           .map((item) =>(
             
             
@@ -353,30 +360,58 @@ export default function ShopGrid() {
           
             
                           ))
-            
-
-                        ): (
-                               
-                        data.map((item) =>(
-          
-          
-                          <Card
-                          product_name = {item.Name}
-                          id = {item.id}
-                          product_color = {item.Color}
-                          product_size = {item.Size}
-                          product_img = {item.Picture_url1}
-                          current_price ={item.Price}
-                          formal_price ={item.SlicedPercentage}
-                          short_desc = {item.Description}
+  
+                        ):(
+  
+                          BrandFilter !== "" ? (
+  
+                            data.filter(data => data.Brand_id == BrandFilter)
                           
-                          />
-      
+                          
+                            .map((item) =>(
+              
+              
+                                <Card
+                                product_name = {item.Name}
+                                id = {item.id}
+                                product_color = {item.Color}
+                                product_size = {item.Size}
+                                product_img = {item.Picture_url1}
+                                current_price ={item.Price}
+                                formal_price ={item.SlicedPercentage}
+                                short_desc = {item.Description}
+                               
+                                />
+            
+              
+                            ))
+              
+  
+                          ): (
+                                 
+                          data.map((item) =>(
+            
+            
+                            <Card
+                            product_name = {item.Name}
+                            id = {item.id}
+                            product_color = {item.Color}
+                            product_size = {item.Size}
+                            product_img = {item.Picture_url1}
+                            current_price ={item.Price}
+                            formal_price ={item.SlicedPercentage}
+                            short_desc = {item.Description}
+                            
+                            />
         
-                      ))
-        
-                        ) 
-                      )
+          
+                        ))
+          
+                          ) 
+                        )
+                      ) 
+
+                      
                        
 
                        

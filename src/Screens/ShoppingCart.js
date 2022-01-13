@@ -23,7 +23,7 @@ function ShoppingCart() {
   const Total = (() =>{
     
     
-   const cartTotal = JSON.parse(localStorage.getItem("total"));
+   const cartTotal = JSON.parse(localStorage.getItem("SubTotal"));
     
     setData(cartTotal);
     
