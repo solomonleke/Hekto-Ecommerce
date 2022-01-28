@@ -11,6 +11,11 @@ function CartProduct({img, price, qty, name, idx, color, size, wholeProduct, id}
   const [total, setTotal]= useState(0);
   const [productPrice, setProductPrice]=useState(0)
 
+  const change = (() =>{
+    const cart_product = JSON.parse(localStorage.getItem("productsCart"));
+    setCartLength(cart_product?.reduce((a,b)=>a+b.qty, 0))
+  })
+  
   const handleIncrement=()=>{
     let item = JSON.parse(localStorage.getItem('productsCart'));
     let itemTotal = JSON.parse(localStorage.getItem('total'));
@@ -28,6 +33,8 @@ function CartProduct({img, price, qty, name, idx, color, size, wholeProduct, id}
     localStorage.setItem('SubTotal',parseInt(itemTotal) + parseInt(productPrice) );
     setCartTotal(parseInt(itemSubTotal) + parseInt(productPrice));
     // updateTotal()
+
+    change();
     
 }
 
@@ -50,6 +57,8 @@ const handleDecrement=()=>{
         localStorage.setItem('SubTotal', Subtotal);
         setCartTotal(parseInt(itemSubTotal) - parseInt(productPrice));
     }
+
+    change();
    
       
 }
@@ -65,18 +74,12 @@ const handleDecrement=()=>{
       localStorage.setItem("productsCart",JSON.stringify(cartItems));
 
       localStorage.setItem("total", parseInt(cartTotal) - parseInt(productPrice));
-      
-      setCartLength(CartLength-1)
+      change()
       
     })
     
 
-    const change = (() =>{
-
-      setCartLength(CartLength-1)
-    
-
-    })
+   
 
     useEffect(() => {
 

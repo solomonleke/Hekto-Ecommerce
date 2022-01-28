@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import CardOffer from '../Components/CardOffer'
 import CardTrending from '../Components/CardTrending'
 import FeaturedCard from '../Components/FeaturedCard'
@@ -9,6 +9,32 @@ import Services from '../Components/Services'
 import TopCard from '../Components/TopCard'
 
 export default function Homepage() {
+
+    const [data, setData] = useState([])
+
+    const featuredProduct = ()=>{
+                 
+      fetch('http://localhost:8000/api/FeaturedProducts')
+      .then(res => res.json())
+      .then(json => {
+          
+          
+          setData(json);
+          console.log("featured", json)
+      })
+      .catch(error => {
+          
+        console.log("error", error);
+        
+    })
+    }
+
+    useEffect(() => {
+
+        featuredProduct()
+      
+    }, [])
+
 
     return (
         <div>
@@ -52,23 +78,22 @@ export default function Homepage() {
             <h2 className="featured">featured Products</h2>
 
             <div className="row">
+        {
+            data.map((item) =>(
 
-            <FeaturedCard
-            title = "obinna"
-            
-            />
-            <FeaturedCard
-            title = "collins"
-            
-            />
-            <FeaturedCard
-            title = "ireti"
-            
-            />
-            <FeaturedCard
-            title = "paul"
-            
-            />
+                <FeaturedCard
+                title = {item.Name}
+                image = {item.Picture_url1}
+                color = {item.Color}
+                price = {item.Price}
+                id = {item.id}
+                
+                />
+            ))
+         
+        }
+           
+         
 
             
             </div>

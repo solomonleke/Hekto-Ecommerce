@@ -12,7 +12,14 @@ toast.configure()
 function CartTotals() {
 
   const { userInfo, setUserInfo}= useContext(UserContext);
-  const cartTotal = JSON.parse(localStorage.getItem("total"));
+  
+  const cartTotal = () => {
+    const cartTotal = JSON.parse(localStorage.getItem("productsCart"))||[]
+    const getTotal = cartTotal.reduce((a,b)=>a+parseInt(b.price)*b.qty, 0)
+
+    return getTotal
+  };
+
   const cart_product = JSON.parse(localStorage.getItem("productsCart"));
   const email = JSON.parse(localStorage.getItem("email"));
   const id = JSON.parse(localStorage.getItem("user_id"));
@@ -46,7 +53,7 @@ const saveOrder = ()=>{
       "product_qty": `${item.qty}`,
       "product_price": `${item.price}`,
       "product_total": `${item.qty}`,
-      "trans_total": `${cartTotal}`,
+      "trans_total": `${cartTotal()}`,
       "trans_ref": `${config.reference}`,
       "trans_status": "pending",
   
@@ -108,9 +115,9 @@ const componentProps = {
 };
   return (
     <div className="total-checkout">
-      <h4 className="mt-2 cart-total-txt">Subtotals <span style={{float: "right"}}>$219.00</span></h4>
+      <h4 className="mt-2 cart-total-txt">Subtotals <span style={{float: "right"}}>${cartTotal()}</span></h4>
       <hr />
-      <h4 className="mt-4 cart-total-txt2">Totals <span style={{float: "right"}}>${cartTotal}</span></h4>
+      <h4 className="mt-4 cart-total-txt2">Totals <span style={{float: "right"}}>${cartTotal()}</span></h4>
       <hr />
       <input className="mt-4" type="checkbox" />
       <label

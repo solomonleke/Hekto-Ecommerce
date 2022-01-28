@@ -18,7 +18,7 @@ import ShippingInfo from './Screens/ShippingInfo';
 import About from './Screens/About';
 import Contact from './Screens/Contact';
 import { UserContext } from './Context/UserContext';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -27,21 +27,21 @@ function App() {
 
 
 
+
+
+
   const cart_product = JSON.parse(localStorage.getItem("productsCart"));
-
-
-
 
   const [cartTotal, setCartTotal] = useState(0);
   const [jwt, setJwt]= useState('');
   const [userId, setUserId]= useState('');
   const [userInfo, setUserInfo]= useState("");
 
-  const [CartLength, setCartLength] = useState(
-    
-    cart_product?.length
-   
-  );
+  const [CartLength, setCartLength] = useState(cart_product?.reduce((a,b)=>a+b.qty, 0));
+
+
+
+
   return (
     <div className="App">
   <UserContext.Provider  value= {{CartLength, setCartLength, cartTotal, setCartTotal,jwt, setJwt, userId, setUserId, userInfo, setUserInfo}}>
